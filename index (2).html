@@ -1,0 +1,677 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GadgetGhar Telugu</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background-color: white;
+            min-height: 100vh;
+            position: relative;
+        }
+        
+        .header {
+            padding: 15px;
+            border-bottom: 1px solid #eee;
+            position: relative;
+            text-align: center;
+        }
+        
+        .logo {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 10px;
+            cursor: pointer;
+            border-radius: 50%;
+            background-color: #f0f0f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .logo img {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+        
+        .brand-name {
+            font-size: 20px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .search-bar {
+            padding: 10px 15px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .search-input {
+            width: 100%;
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            font-size: 14px;
+            outline: none;
+        }
+        
+        .search-input:focus {
+            border-color: #0066cc;
+        }
+        
+        .product-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            padding: 15px;
+            min-height: 200px;
+        }
+        
+        .empty-state {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 40px 20px;
+            color: #999;
+            font-style: italic;
+        }
+        
+        .product-card {
+            border: 1px solid #eee;
+            border-radius: 8px;
+            overflow: hidden;
+            background-color: white;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            cursor: pointer;
+        }
+        
+        .product-image-container {
+            height: 150px;
+            background-color: #f9f9f9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 15px;
+        }
+        
+        .product-image {
+            max-width: 100%;
+            max-height: 100%;
+            object-fit: contain;
+        }
+        
+        .product-code {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 40px;
+            height: 40px;
+            font-size: 16px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1;
+        }
+        
+        .product-title-container {
+            padding: 10px;
+            text-align: center;
+            margin-top: auto;
+            background: linear-gradient(to right, #000000, #ffffff);
+            position: relative;
+        }
+        
+        .product-title {
+            font-size: 14px;
+            font-weight: bold;
+            text-transform: uppercase;
+            position: relative;
+            z-index: 1;
+            color: white;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+        
+        /* Admin Panel Styles */
+        .admin-panel {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        
+        .admin-form {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 500px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        .admin-form h2 {
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        
+        .form-group input, 
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        
+        .color-section {
+            margin-bottom: 15px;
+            border: 1px solid #eee;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        
+        .color-section-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .color-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin-top: 5px;
+        }
+        
+        .color-option {
+            width: 30px;
+            height: 30px;
+            border-radius: 4px;
+            cursor: pointer;
+            border: 2px solid transparent;
+            position: relative;
+        }
+        
+        .color-option.selected {
+            border-color: #000;
+        }
+        
+        .color-option.selected::after {
+            content: "✓";
+            color: white;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-shadow: 0 0 2px #000;
+            font-weight: bold;
+        }
+        
+        .form-actions {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        
+        .btn-primary {
+            background-color: #0066cc;
+            color: white;
+        }
+        
+        .btn-secondary {
+            background-color: #ddd;
+            color: #333;
+        }
+        
+        #imagePreview {
+            max-width: 100%;
+            max-height: 150px;
+            margin-top: 10px;
+            display: none;
+        }
+        
+        .image-upload-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 10px;
+        }
+        
+        .upload-btn {
+            background-color: #f0f0f0;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 5px;
+            font-size: 14px;
+        }
+        
+        .upload-btn:hover {
+            background-color: #e0e0e0;
+        }
+        
+        /* Passcode Modal */
+        .passcode-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1001;
+        }
+        
+        .passcode-form {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            width: 90%;
+            max-width: 300px;
+        }
+        
+        .passcode-form h2 {
+            margin-bottom: 10px;
+            text-align: center;
+        }
+        
+        .passcode-input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            text-align: center;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo" ondblclick="showPasscodeModal()">
+                <img src="https://i.imgur.com/JfNt5H1.png" alt="GadgetGhar Logo" id="logoImage">
+            </div>
+            <div class="brand-name">GADGETGHAR TELUGU</div>
+        </div>
+        
+        <div class="search-bar">
+            <input type="text" class="search-input" id="searchInput" placeholder="Search products...">
+        </div>
+        
+        <div class="product-grid" id="productGrid">
+            <div class="empty-state">No products added yet. Double-tap the logo to add products.</div>
+        </div>
+    </div>
+
+    <!-- Passcode Modal -->
+    <div class="passcode-modal" id="passcodeModal">
+        <div class="passcode-form">
+            <h2>Enter Admin Passcode</h2>
+            <input type="password" class="passcode-input" id="passcodeInput" placeholder="Enter 4-digit code" maxlength="4">
+        </div>
+    </div>
+
+    <!-- Admin Panel -->
+    <div class="admin-panel" id="adminPanel">
+        <div class="admin-form">
+            <h2>Add New Product</h2>
+            <form id="productForm">
+                <div class="form-group">
+                    <label for="productCode">Product Code</label>
+                    <input type="text" id="productCode" required placeholder="e.g. 620 (will become #620)">
+                </div>
+                
+                <div class="color-section">
+                    <div class="color-section-title">Code Background</div>
+                    <div class="color-options">
+                        <div class="color-option selected" style="background-color: #FFD700;" data-color="#FFD700"></div>
+                        <div class="color-option" style="background-color: #FF6347;" data-color="#FF6347"></div>
+                        <div class="color-option" style="background-color: #98FB98;" data-color="#98FB98"></div>
+                        <div class="color-option" style="background-color: #87CEEB;" data-color="#87CEEB"></div>
+                    </div>
+                    <input type="hidden" id="codeBgColor" value="#FFD700">
+                </div>
+                
+                <div class="color-section">
+                    <div class="color-section-title">Code Text Color</div>
+                    <div class="color-options">
+                        <div class="color-option selected" style="background-color: #000000;" data-color="#000000"></div>
+                        <div class="color-option" style="background-color: #FFFFFF;" data-color="#FFFFFF"></div>
+                        <div class="color-option" style="background-color: #FF0000;" data-color="#FF0000"></div>
+                        <div class="color-option" style="background-color: #0000FF;" data-color="#0000FF"></div>
+                    </div>
+                    <input type="hidden" id="codeTextColor" value="#000000">
+                </div>
+                
+                <div class="form-group">
+                    <label for="productTitle">Product Title</label>
+                    <input type="text" id="productTitle" required placeholder="e.g. ROLL UP SHOPPING BAG">
+                </div>
+                
+                <div class="color-section">
+                    <div class="color-section-title">Title Text Color</div>
+                    <div class="color-options">
+                        <div class="color-option selected" style="background-color: #FFFFFF;" data-color="#FFFFFF"></div>
+                        <div class="color-option" style="background-color: #000000;" data-color="#000000"></div>
+                        <div class="color-option" style="background-color: #FF0000;" data-color="#FF0000"></div>
+                        <div class="color-option" style="background-color: #0000FF;" data-color="#0000FF"></div>
+                        <div class="color-option" style="background-color: #006400;" data-color="#006400"></div>
+                    </div>
+                    <input type="hidden" id="titleTextColor" value="#FFFFFF">
+                </div>
+                
+                <div class="form-group">
+                    <label for="productImage">Product Image</label>
+                    <div class="image-upload-container">
+                        <input type="file" id="productImage" accept="image/*" style="display: none;">
+                        <button type="button" class="upload-btn" onclick="document.getElementById('productImage').click()">Choose Image</button>
+                        <img id="imagePreview" alt="Image Preview">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="productLink">Product Link (Buying URL)</label>
+                    <input type="url" id="productLink" required placeholder="https://example.com/product">
+                </div>
+                
+                <div class="form-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeAdminPanel()">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Add Product</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // DOM elements
+        const productGrid = document.getElementById('productGrid');
+        const adminPanel = document.getElementById('adminPanel');
+        const productForm = document.getElementById('productForm');
+        const productImage = document.getElementById('productImage');
+        const imagePreview = document.getElementById('imagePreview');
+        const searchInput = document.getElementById('searchInput');
+        const passcodeModal = document.getElementById('passcodeModal');
+        const passcodeInput = document.getElementById('passcodeInput');
+        const logoImage = document.getElementById('logoImage');
+
+        // Store products with their links
+        let products = [];
+        const ADMIN_PASSCODE = "9585"; // Set your passcode here
+
+        // Color selection functionality
+        function setupColorSelection() {
+            document.querySelectorAll('.color-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    // Find the parent color section
+                    let parent = this.closest('.color-options');
+                    if (!parent) return;
+                    
+                    // Remove selected class from all options in this group
+                    parent.querySelectorAll('.color-option').forEach(opt => {
+                        opt.classList.remove('selected');
+                    });
+                    
+                    // Add selected class to clicked option
+                    this.classList.add('selected');
+                    
+                    // Find the corresponding hidden input
+                    let section = parent.closest('.color-section');
+                    if (!section) return;
+                    
+                    let input = section.querySelector('input[type="hidden"]');
+                    if (input) {
+                        input.value = this.dataset.color;
+                    }
+                });
+            });
+        }
+
+        // Show passcode modal
+        function showPasscodeModal() {
+            passcodeModal.style.display = 'flex';
+            passcodeInput.focus();
+        }
+
+        // Close passcode modal
+        function closePasscodeModal() {
+            passcodeModal.style.display = 'none';
+            passcodeInput.value = '';
+        }
+
+        // Check passcode automatically on input
+        function checkPasscode() {
+            if (passcodeInput.value === ADMIN_PASSCODE) {
+                closePasscodeModal();
+                openAdminPanel();
+            }
+        }
+
+        // Add product to grid
+        function addProductToGrid(code, title, codeBgColor, codeTextColor, titleTextColor, productLink, imageUrl = null) {
+            // Remove empty state if it exists
+            const emptyState = productGrid.querySelector('.empty-state');
+            if (emptyState) {
+                productGrid.removeChild(emptyState);
+            }
+            
+            // Ensure code starts with #
+            const formattedCode = code.startsWith('#') ? code : `#${code}`;
+            
+            const productCard = document.createElement('div');
+            productCard.className = 'product-card';
+            productCard.dataset.link = productLink;
+            productCard.dataset.title = title.toLowerCase();
+            productCard.dataset.code = formattedCode.toLowerCase();
+            
+            const productCode = document.createElement('div');
+            productCode.className = 'product-code';
+            productCode.textContent = formattedCode;
+            productCode.style.background = codeBgColor;
+            productCode.style.color = codeTextColor;
+            
+            const imageContainer = document.createElement('div');
+            imageContainer.className = 'product-image-container';
+            
+            if (imageUrl) {
+                const img = document.createElement('img');
+                img.className = 'product-image';
+                img.src = imageUrl;
+                imageContainer.appendChild(img);
+            }
+            
+            const titleContainer = document.createElement('div');
+            titleContainer.className = 'product-title-container';
+            
+            const productTitle = document.createElement('div');
+            productTitle.className = 'product-title';
+            productTitle.textContent = title;
+            productTitle.style.color = titleTextColor;
+            
+            titleContainer.appendChild(productTitle);
+            productCard.appendChild(productCode);
+            productCard.appendChild(imageContainer);
+            productCard.appendChild(titleContainer);
+            productGrid.appendChild(productCard);
+            
+            // Store product data
+            products.push({
+                code: formattedCode,
+                title,
+                codeBgColor,
+                codeTextColor,
+                titleTextColor,
+                productLink,
+                imageUrl
+            });
+            
+            // Add click event to redirect to product link
+            productCard.addEventListener('click', function() {
+                window.open(productLink, '_blank');
+            });
+        }
+
+        // Filter products based on search input
+        function filterProducts(searchTerm) {
+            const productCards = document.querySelectorAll('.product-card');
+            const emptyState = document.querySelector('.empty-state');
+            let hasVisibleProducts = false;
+            
+            if (searchTerm.trim() === '') {
+                // Show all products if search is empty
+                productCards.forEach(card => {
+                    card.style.display = 'flex';
+                    hasVisibleProducts = true;
+                });
+            } else {
+                // Filter products
+                productCards.forEach(card => {
+                    const title = card.dataset.title;
+                    const code = card.dataset.code;
+                    const searchLower = searchTerm.toLowerCase();
+                    
+                    if (title.includes(searchLower) || code.includes(searchLower)) {
+                        card.style.display = 'flex';
+                        hasVisibleProducts = true;
+                    } else {
+                        card.style.display = 'none';
+                    }
+                });
+            }
+            
+            // Show empty state if no products match
+            if (!hasVisibleProducts && products.length > 0) {
+                if (!emptyState) {
+                    const emptyDiv = document.createElement('div');
+                    emptyDiv.className = 'empty-state';
+                    emptyDiv.textContent = 'No products match your search.';
+                    productGrid.appendChild(emptyDiv);
+                } else {
+                    emptyState.textContent = 'No products match your search.';
+                    emptyState.style.display = 'block';
+                }
+            } else if (hasVisibleProducts && emptyState) {
+                emptyState.style.display = 'none';
+            }
+        }
+
+        // Open admin panel
+        function openAdminPanel() {
+            adminPanel.style.display = 'flex';
+        }
+
+        // Close admin panel
+        function closeAdminPanel() {
+            adminPanel.style.display = 'none';
+            productForm.reset();
+            imagePreview.style.display = 'none';
+            
+            // Reset to default colors
+            document.getElementById('codeBgColor').value = '#FFD700';
+            document.getElementById('codeTextColor').value = '#000000';
+            document.getElementById('titleTextColor').value = '#FFFFFF';
+            
+            // Reset selected classes
+            document.querySelectorAll('.color-option').forEach(opt => opt.classList.remove('selected'));
+            document.querySelectorAll('.color-options .color-option:first-child').forEach(opt => {
+                opt.classList.add('selected');
+            });
+        }
+
+        // Handle image preview
+        productImage.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    imagePreview.src = event.target.result;
+                    imagePreview.style.display = 'block';
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Handle search input
+        searchInput.addEventListener('input', function() {
+            filterProducts(this.value);
+        });
+
+        // Handle form submission
+        productForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const code = document.getElementById('productCode').value;
+            const title = document.getElementById('productTitle').value;
+            const codeBgColor = document.getElementById('codeBgColor').value;
+            const codeTextColor = document.getElementById('codeTextColor').value;
+            const titleTextColor = document.getElementById('titleTextColor').value;
+            const productLink = document.getElementById('productLink').value;
+            const imageFile = productImage.files[0];
+            
+            let imageUrl = null;
+            if (imageFile) {
+                imageUrl = URL.createObjectURL(imageFile);
+            }
+            
+            addProductToGrid(code, title, codeBgColor, codeTextColor, titleTextColor, productLink, imageUrl);
+            closeAdminPanel();
+        });
+
+        // Auto-check passcode on input
+        passcodeInput.addEventListener('input', function() {
+            if (this.value.length === 4) {
+                checkPasscode();
+            }
+        });
+
+        // Initialize on load
+        document.addEventListener('DOMContentLoaded', function() {
+            setupColorSelection();
+        });
+    </script>
+</body>
+</html>
